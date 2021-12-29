@@ -8,7 +8,7 @@
             <h2>Users Management</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-success" href="{{ route('users.create') }}"> Create New User</a>
+            <a class="btn btn-success" href="{{ route('users.create') }}"> Create a new user</a>
         </div>
     </div>
 </div>
@@ -23,9 +23,9 @@
 
 <table class="table table-bordered">
  <tr>
-   <th>No</th>
+   <th>#</th>
    <th>Name</th>
-   <th>Email</th>
+   <th>E-mail</th>
    <th>Roles</th>
    <th width="280px">Action</th>
  </tr>
@@ -42,11 +42,20 @@
       @endif
     </td>
     <td>
-       <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
-       <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
+      <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
+      <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
         {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
             {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
         {!! Form::close() !!}
+
+        <a class="btn btn-secondary" href="{{ route('users.toggle',$user->id) }}"> 
+          @if ($user->isEnabled())
+              Disable
+          @else
+              Enable
+          @endif
+        </a>    
+
     </td>
   </tr>
  @endforeach
@@ -54,7 +63,5 @@
 
 
 {!! $data->render() !!}
-
-
 
 @endsection

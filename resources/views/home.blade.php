@@ -10,11 +10,21 @@
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                           You are logged in!
+                        </div>                   
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    @if (!auth()->user()->isEnabled())
+                        <div class="alert alert-success" role="alert">
+                            Your account has disabled. If was an error, please contact us. 
+                        </div>
+                    @else
+                        <div class="alert alert-success" role="alert">
+                            Welcome. You are logged in!
+                        </div>              
+                    @endif
+
+                    
                 </div>
             </div>
         </div>

@@ -132,4 +132,22 @@ class UserController extends Controller
         return redirect()->route('users.index')
                         ->with('success','User deleted successfully');
     }
+
+
+    /**
+     * Disabled the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function toggle($id)
+    {
+        $user = User::find($id);
+        $user->toggle();
+        $user->save();
+
+        return redirect()->route('users.index')
+                        ->with('success','Users status update successfully');
+    }
+
 }

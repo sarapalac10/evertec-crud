@@ -41,4 +41,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function toggle(): void
+    {
+        if(!$this->isEnabled()){
+            $this->enabled_at = now();
+        } else {
+            $this->enabled_at = null;
+        }
+    }
+
+    public function isEnabled(): bool
+    {
+        return !is_null($this->enabled_at);
+    }
+
 }
