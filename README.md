@@ -5,3 +5,5 @@ El administrador de MercaTodo necesita un sistema que le permita realizar la ven
 
 <h3> Etapa 1: PHP Básico (10 puntos) </h3>
 Requerimientos funcionales ● Un cliente podrá registrarse y loguearse en el sistema. ● Para evitar el ataque de bots o usuarios falsos, el cliente deberá verificar su correo electrónico para completar el registro. ● El administrador podrá gestionar sus clientes de tal manera que pueda verlos, actualizarlos, habilitarlos e inhabilitarlos. Requerimientos técnicos ● Uso de migraciones para la creación de la estructura de base de datos.
+
+Fecha de entrega de reto 1: 02/01/2022
