@@ -50,6 +50,7 @@ class UserController extends Controller
             'roles' => 'required'
         ]);
     
+        
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -132,7 +133,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         User::find($id)->delete();
-        return redirect()->route('users.index')
+        return redirect()->route('users.show')
                         ->with('success','User deleted successfully');
     }
 

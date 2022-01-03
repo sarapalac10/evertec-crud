@@ -88,6 +88,7 @@ class UserModuleTest extends TestCase
     /** @test */
     public function it_saves_a_new_user() 
     {
+        /** @var \App\Models\User $admin */
         $admin = $this->CreateAdminUser();
         $user = User::factory()->make();
         $data = [
@@ -111,6 +112,56 @@ class UserModuleTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function it_can_not_saves_a_new_user() 
+    {
+        /** @var \App\Models\User $admin */
+        $user = User::factory()->make();
+        $data = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'password' => 12345678,
+            'confirm-password' => 12345678,
+            'roles' => Roles::USER,
+        ];
+
+        $response = $this->actingAs($user)
+            ->post(route('users.store',$data));
+
+        $response->assertForbidden();
+    }
+
+    /** @test */
+    public function it_updates_a_previously_created_user() 
+    {
+        /** @var \App\Models\User $admin */
+        $admin = $this->CreateAdminUser();
+        $user = User::factory()->make();
+        $newData = [
+            'name' => $user->name,
+        ];
+
+        $response = $this->actingAs($admin)
+            ->put(route('users.store',$newData));
+
+        $response->assertSee('User updated successfully');
+
+    }
+
+    // /** @test */
+    // public function it_deletes_a_previously_created_user() 
+    // {
+    //     /** @var \App\Models\User $admin */
+    //     $admin = $this->CreateAdminUser();
+    //     $user = User::factory()->create();
+
+    //     $response = $this->actingAs($admin)
+    //         ->put(route('users.destroy',$user['id']));
+
+    //     $response->assertSee("User deleted successfully");
+    // }
+
+        
     private function CreateAdminUser(): User
     {
         $this->seed(RolesTableSeeder::class);
@@ -121,4 +172,5 @@ class UserModuleTest extends TestCase
     }
 
 }
+
 
