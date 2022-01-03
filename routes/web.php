@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\Roles;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -29,7 +30,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::get('users/{id}/toggle', [UserController::class, 'toggle'])->name('users.toggle');
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->middleware('role:' . Roles::ADMIN);
     Route::resource('products', ProductController::class);
 });
 

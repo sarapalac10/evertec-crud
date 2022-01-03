@@ -47,14 +47,13 @@
         {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
             {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
         {!! Form::close() !!}
-
-        <a class="btn btn-secondary" href="{{ route('users.toggle',$user->id) }}"> 
-          @if ($user->isEnabled())
-              Disable
-          @else
-              Enable
-          @endif
-        </a>    
+      <a class="btn btn-secondary" href="{{ route('users.toggle',$user->id) }}"> 
+        @if ($user->isEnabled())
+            Disable
+        @else
+            Enable
+        @endif
+      </a>    
 
     </td>
   </tr>

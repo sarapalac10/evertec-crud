@@ -2,13 +2,13 @@
     
 namespace App\Http\Controllers;
     
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Spatie\Permission\Models\Role;
 use DB;
-use Hash;
+use App\Models\User;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
     
 class UserController extends Controller
 {
@@ -50,10 +50,13 @@ class UserController extends Controller
             'roles' => 'required'
         ]);
     
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
-    
-        $user = User::create($input);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->enabled_at = now();
+        $user->save();
+
         $user->assignRole($request->input('roles'));
     
         return redirect()->route('users.index')
