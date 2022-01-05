@@ -50,6 +50,7 @@ class UserModuleTest extends TestCase
     /** @test */
     public function authorized_user_can_access_to_users_module() 
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('users.index'));
@@ -115,7 +116,7 @@ class UserModuleTest extends TestCase
     /** @test */
     public function it_can_not_saves_a_new_user() 
     {
-        /** @var \App\Models\User $admin */
+        /** @var \App\Models\User $user */
         $user = User::factory()->make();
         $data = [
             'name' => $user->name,
@@ -136,30 +137,41 @@ class UserModuleTest extends TestCase
     {
         /** @var \App\Models\User $admin */
         $admin = $this->CreateAdminUser();
-        $user = User::factory()->make();
+        $user = User::factory()->create();
         $newData = [
-            'name' => $user->name,
+            'name' => 'NuevoNombre',
+            'email' => $user->email,
+            'password' => 12345678,
+            'confirm-password' => 12345678,
+            'roles' => Roles::USER,
         ];
 
         $response = $this->actingAs($admin)
-            ->put(route('users.store',$newData));
+            ->put(route('users.update', $user), $newData);
 
-        $response->assertSee('User updated successfully');
+        $response->assertRedirect(route('users.index'));
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'name' => $newData['name'],
+        ]);
 
     }
 
-    // /** @test */
-    // public function it_deletes_a_previously_created_user() 
-    // {
-    //     /** @var \App\Models\User $admin */
-    //     $admin = $this->CreateAdminUser();
-    //     $user = User::factory()->create();
+    /** @test */
+    public function it_deletes_a_previously_created_user() 
+    {
+        /** @var \App\Models\User $admin */
+        $admin = $this->CreateAdminUser();
+        $user = User::factory()->create();
 
-    //     $response = $this->actingAs($admin)
-    //         ->put(route('users.destroy',$user['id']));
+        $response = $this->actingAs($admin)
+            ->delete(route('users.destroy', ['user' => $user->id]));
 
-    //     $response->assertSee("User deleted successfully");
-    // }
+        $response->assertRedirect(route('users.index'));
+
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);     
+    }
 
         
     private function CreateAdminUser(): User
